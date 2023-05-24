@@ -26,7 +26,6 @@ jobs:
     - name: Build
       shell: cmd
       run: msbuild Osiris.sln /p:Platform=x86 /p:Configuration=${{ matrix.configuration }} ${{ env.toolset }}
-
   cmake:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -49,3 +48,12 @@ jobs:
       run: cmake --build build --config ${{ matrix.configuration }}
     - name: Run unit tests
       run: cd build && ctest --output-on-failure --schedule-random -j $env:NUMBER_OF_PROCESSORS
+    - name: upload
+      uses: svenstaro/upload-release-action@2.6.0
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ github.ref }}
+        file: Osiris.dll
+        asset_name: Osiris.dll
+        prerelease: true
+        overwrite: true

@@ -4,14 +4,20 @@
 
 #include "PebLdr.h"
 #include "PortableExecutable.h"
+#include <Utils/MemorySection.h>
 #include <Utils/SafeAddress.h>
+#include "WindowsPlatformApi.h"
 
-template <typename PlatformApi>
 class WindowsDynamicLibrary {
 public:
     explicit WindowsDynamicLibrary(const char* libraryName)
-        : handle{ PebLdr{ PlatformApi::getPeb()->ldr }.getModuleHandle(libraryName) }
+        : handle{ PebLdr{ WindowsPlatformApi::getPeb()->ldr }.getModuleHandle(libraryName) }
     {
+    }
+
+    [[nodiscard]] explicit operator bool() const noexcept
+    {
+        return handle != nullptr;
     }
 
     [[nodiscard]] SafeAddress getFunctionAddress(const char* functionName) const noexcept
@@ -21,10 +27,17 @@ public:
         return SafeAddress{ 0 };
     }
 
-    [[nodiscard]] std::span<const std::byte> getCodeSection() const noexcept
+    [[nodiscard]] MemorySection getCodeSection() const noexcept
     {
         if (handle)
             return portableExecutable().getCodeSection();
+        return {};
+    }
+
+    [[nodiscard]] MemorySection getVmtSection() const noexcept
+    {
+        if (handle)
+            return portableExecutable().getVmtSection();
         return {};
     }
 

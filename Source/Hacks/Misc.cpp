@@ -168,19 +168,18 @@ struct MiscConfig {
     OffscreenEnemies offscreenEnemies;
 } miscConfig;
 
-Misc::Misc(const ClientInterfaces& clientInterfaces, const EngineInterfaces& engineInterfaces, const OtherInterfaces& otherInterfaces, const Memory& memory, const ClientPatternFinder& clientPatternFinder, const PatternFinder& enginePatternFinder)
-    : clientInterfaces{ clientInterfaces }, engineInterfaces{ engineInterfaces }, interfaces{ otherInterfaces }, memory{ memory },
-#if IS_WIN32() || IS_WIN64()
-    setClanTag{ retSpoofGadgets->engine, enginePatternFinder("53 56 57 8B DA 8B F9 FF 15"_pat).get() },
-#elif IS_LINUX()
-    setClanTag{ retSpoofGadgets->engine, enginePatternFinder("E8 ? ? ? ? E9 ? ? ? ? 0F 1F 44 00 00 48 8B 7D B0"_pat).add(1).abs().get() },
-#endif
-    submitReport{ retSpoofGadgets->client, clientPatternFinder.submitReport() }
-{
-    demoOrHLTV = clientPatternFinder.demoOrHLTV();
+Misc::Misc(const ClientInterfaces& clientInterfaces, const EngineInterfaces& engineInterfaces, const OtherInterfaces& otherInterfaces, const Memory& memory, const ClientPatternFinder& clientPatternFinder, const EnginePatternFinder& enginePatternFinder)
+    : clientInterfaces{ clientInterfaces }
+    , engineInterfaces{ engineInterfaces }
+    , interfaces{ otherInterfaces }
+    , memory{ memory }
+    , setClanTag{ retSpoofGadgets->engine, enginePatternFinder.sendClanTag() }
+    , submitReport{ retSpoofGadgets->client, clientPatternFinder.submitReport() }
+    , demoOrHLTV{ clientPatternFinder.demoOrHLTV() }
+    , insertIntoTree{ clientPatternFinder.insertIntoTree() }
+    , demoFileEndReached{ clientPatternFinder.demoFileEndReached() }
+{ 
     money = clientPatternFinder.money();
-    insertIntoTree = clientPatternFinder.insertIntoTree();
-    demoFileEndReached = clientPatternFinder.demoFileEndReached();
 }
 
 bool Misc::isRadarHackOn() noexcept
@@ -1301,7 +1300,8 @@ std::optional<std::pair<csgo::Vector, csgo::Vector>> Misc::listLeavesInBoxHook(R
     if (!info || !info->renderable)
         return {};
 
-    const auto ent = VirtualCallable{ retSpoofGadgets->client, std::uintptr_t(info->renderable) - sizeof(std::uintptr_t) }.call<csgo::EntityPOD*, WIN32_LINUX(7, 8)>();
+    struct Dummy : GameClass<Dummy, Dummy> {};
+    const auto ent = Dummy::from(retSpoofGadgets->client, reinterpret_cast<Dummy*>(std::uintptr_t(info->renderable) - sizeof(std::uintptr_t))).call<csgo::EntityPOD*, WIN32_LINUX(7, 8)>();
     if (!ent || !csgo::Entity::from(retSpoofGadgets->client, ent).isPlayer())
         return {};
 
@@ -1550,7 +1550,7 @@ void Misc::drawGUI(Visuals& visuals, inventory_changer::InventoryChanger& invent
     ImGui::PopID();
 
     if (ImGui::Button("Unhook"))
-        hooks->uninstall(*this, glow, memory, visuals, inventoryChanger);
+        unhook = true;
 
     ImGui::Columns(1);
     if (!contentOnly)

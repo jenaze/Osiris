@@ -6,10 +6,9 @@
 #include "Utils/SafeAddress.h"
 
 struct SdlFunctions {
-    template <typename PlatformApi>
-    SdlFunctions(DynamicLibrary<PlatformApi> libSDL)
-        : pollEvent{ libSDL.getFunctionAddress("SDL_PollEvent").add(2).abs().get() },
-          swapWindow{ libSDL.getFunctionAddress("SDL_GL_SwapWindow").add(2).abs().get() }
+    SdlFunctions(DynamicLibrary libSDL)
+        : pollEvent{ libSDL.getFunctionAddress("SDL_PollEvent").add(2).abs().as<std::uintptr_t>() },
+          swapWindow{ libSDL.getFunctionAddress("SDL_GL_SwapWindow").add(2).abs().as<std::uintptr_t>() }
     {
     }
 

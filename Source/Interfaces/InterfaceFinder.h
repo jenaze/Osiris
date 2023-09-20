@@ -6,9 +6,8 @@
 #include <RetSpoof/RetSpoofInvoker.h>
 
 struct InterfaceFinder {
-    template <typename PlatformApi>
-    explicit InterfaceFinder(DynamicLibrary<PlatformApi> library, RetSpoofInvoker invoker)
-        : createInterface{ invoker, library.getFunctionAddress("CreateInterface").get() }
+    explicit InterfaceFinder(DynamicLibrary library, RetSpoofInvoker invoker)
+        : createInterface{ invoker, library.getFunctionAddress("CreateInterface").as<csgo::CreateInterface>() }
     {
     }
 

@@ -23,6 +23,8 @@
 #include "Utils/ReturnAddress.h"
 #include "InventoryChanger/InventoryChanger.h"
 #include "Hacks/Features.h"
+#include "Hooks.h"
+#include "MemoryAllocation/FixedAllocator.h"
 
 namespace csgo
 {
@@ -45,18 +47,24 @@ enum class GlobalContextState {
     Initialized
 };
 
-template <typename PlatformApi>
 class GlobalContext {
 public:
-    GlobalContext(PlatformApi platformApi);
+#if IS_WIN32() || IS_WIN64()
+    GlobalContext(HMODULE moduleHandle);
 
-#if IS_LINUX()
+    HMODULE moduleHandle;
+    std::optional<WindowProcedureHook> windowProcedureHook;
+#elif IS_LINUX()
+    GlobalContext();
+
+    std::add_pointer_t<int(SDL_Event*)> pollEvent;
+
     int pollEventHook(SDL_Event* event);
     void swapWindowHook(SDL_Window* window);
 #endif
 
-    PlatformApi platformApi;
-
+    FixedAllocator<10'000> fixedAllocator;
+    std::optional<Hooks> hooks;
     std::optional<EventListener> gameEventListener;
     std::optional<EngineInterfacesPODs> engineInterfacesPODs;
     std::optional<Features> features;
@@ -71,6 +79,7 @@ public:
         return OtherInterfaces{ retSpoofGadgets->client, *interfaces };
     }
 
+    void enable();
     void renderFrame();
 
     GlobalContextState state = GlobalContextState::NotInitialized;

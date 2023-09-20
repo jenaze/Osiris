@@ -105,6 +105,18 @@
     <Filter Include="BytePatterns">
       <UniqueIdentifier>{725dc9cb-6df9-4b2c-8095-bb88f2061822}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vmt">
+      <UniqueIdentifier>{cf4fc922-308a-4d3c-8448-4e4002e85dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MemoryAllocation">
+      <UniqueIdentifier>{d969ab9e-3c43-4920-9b63-a03cb992bd03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Verification">
+      <UniqueIdentifier>{632357e8-8179-49cd-9cd4-c724a0a406e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows\DLLs">
+      <UniqueIdentifier>{6d627371-1fe5-4a39-9bcd-ec33550ce53f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GUI.cpp">
@@ -152,13 +164,7 @@
     <ClCompile Include="EventListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hooks\VmtSwap.cpp">
-      <Filter>Hooks</Filter>
-    </ClCompile>
     <ClCompile Include="Hooks\MinHook.cpp">
-      <Filter>Hooks</Filter>
-    </ClCompile>
-    <ClCompile Include="Hooks\VmtHook.cpp">
       <Filter>Hooks</Filter>
     </ClCompile>
     <ClCompile Include="GameData.cpp">
@@ -406,13 +412,7 @@
     <ClInclude Include="ConfigStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hooks\VmtSwap.h">
-      <Filter>Hooks</Filter>
-    </ClInclude>
     <ClInclude Include="Hooks\MinHook.h">
-      <Filter>Hooks</Filter>
-    </ClInclude>
-    <ClInclude Include="Hooks\VmtHook.h">
       <Filter>Hooks</Filter>
     </ClInclude>
     <ClInclude Include="GameData.h">
@@ -1182,6 +1182,96 @@
     </ClInclude>
     <ClInclude Include="BytePatterns\LinuxClientPatternFinder.h">
       <Filter>BytePatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="BytePatterns\LinuxEnginePatternFinder.h">
+      <Filter>BytePatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="BytePatterns\EnginePatternFinder.h">
+      <Filter>BytePatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="BytePatterns\WindowsEnginePatternFinder.h">
+      <Filter>BytePatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vmt\VmtLength.h">
+      <Filter>Vmt</Filter>
+    </ClInclude>
+    <ClInclude Include="Vmt\VmtLengthCalculator.h">
+      <Filter>Vmt</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MemorySection.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\TypeInfoPrecedingVmt.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Vmt\VmtCopy.h">
+      <Filter>Vmt</Filter>
+    </ClInclude>
+    <ClInclude Include="Vmt\VmtSwapper.h">
+      <Filter>Vmt</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\RefCountedHook.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\MemoryAllocator.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\FixedAllocator.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\FreeMemoryRegion.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\FreeMemoryRegionFinder.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\FreeMemoryRegionList.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\WindowsMessageBox.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\SimpleMessageBox.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\PlatformApi.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Verification\Verifier.h">
+      <Filter>Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="Verification\VerifyMacros.h">
+      <Filter>Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\CharUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\DLLs\CombaseDll.h">
+      <Filter>Platform\Windows\DLLs</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\DLLs\Shell32Dll.h">
+      <Filter>Platform\Windows\DLLs</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\CoTaskMemDeleter.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\UserDocumentsFolderPath.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\MemoryDeleter.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\UniquePtr.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\ConstString.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryAllocation\MemoryAllocatorBase.h">
+      <Filter>MemoryAllocation</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\GenericFunctionPointer.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
